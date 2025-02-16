@@ -1,0 +1,88 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Fallback from "/public/fallback.jpeg";
+const allBlogPosts = await getCollection("blog");
+import Tooltip from '../components/Tooltip.astro'
+
+console.log(allBlogPosts);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles/global.css" />
+    <title>Blog blablalbla</title>
+  </head>
+  <body>
+    <h1>My posts</h1>
+
+    <div class="posts-grid">
+      {
+        allBlogPosts.map((post) => (
+          <div id="post-item" data-props={JSON.stringify(post)}>
+            <Image src={Fallback} height={200} width={300} alt={"post image"} />
+            <Tooltip title={post?.rendered?.metadata?.frontmatter.title}>
+              <h2 id="post-title">
+                {post?.rendered?.metadata?.frontmatter.title}
+              </h2>
+            </Tooltip>
+            <p>{post?.rendered?.metadata?.frontmatter.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  h1 {
+    color: red;
+  }
+
+  .posts-grid {
+    display: grid;
+    width: 300px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+
+    h2 {
+      font-size: 14px;
+      margin: 16px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  #post-title {
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+  }
+</style>
+
+<script type="module">
+  const posts = document.querySelectorAll("#post-item");
+
+  posts.forEach((post) => {
+    post.addEventListener("click", () => {
+      const props = JSON.parse(post.dataset.props);
+      window.location.href = `/blog/${props.id}`;
+    });
+  });
+</script>

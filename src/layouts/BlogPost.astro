@@ -1,0 +1,68 @@
+---
+const {
+  frontmatter: { title },
+  metadata,
+} = Astro.props;
+
+const tags = metadata.frontmatter.tags || [];
+const tagsString = tags.join(", ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="keywords" content={tagsString} />
+    <meta name="description" content={metadata.frontmatter.description} />
+    <meta name="author" content={metadata.frontmatter.author} />
+    <meta name="primaryTag" content={metadata.frontmatter.primaryTag} />
+    <meta name="pageTitle" content={metadata.frontmatter.title} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles/global.css" />
+    <title>{metadata.frontmatter.title}</title>
+  </head>
+  <body class="container">
+    <header>
+      <button class="arrow-back" id="back-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"></path>
+        </svg>
+      </button>
+    </header>
+    <h1>{title}</h1>
+    <div class="author-details">
+      <p class="author-name">{metadata.frontmatter.author}</p>
+      <p class="author-description">
+        {metadata.frontmatter.authorDescription}
+      </p>
+    </div>
+    <p class="date">{metadata.frontmatter.createdAt}</p>
+
+    <article>
+      <slot />
+    </article>
+  </body>
+</html>
+
+<script type="module">
+  const backButton = document.getElementById("back-button");
+  backButton.addEventListener("click", () => {
+    window.history.back();
+  });
+
+  backButton.removeEventListener("click", () => {
+    window.history.back();
+  });
+</script>

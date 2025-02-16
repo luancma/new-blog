@@ -1,0 +1,63 @@
+---
+const { title } = Astro.props;
+---
+
+<div class="tooltip" id="tooltip-element">
+  <slot />
+  <p class="tooltiptext">{title}</p>
+</div>
+
+<style type="text/scss">
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    z-index: 2;
+
+    &.visible {
+      width: 300px;
+      padding: 10px;
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(8px);
+      transition: opacity 0.3s;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
+      }
+    }
+  }
+</style>
+
+<script type="module">
+  const tooltipElement = document.querySelector("#tooltip-element");
+  const tooltipText = tooltipElement.querySelector(".tooltiptext");
+
+  tooltipElement.addEventListener("mouseover", () => {
+    tooltipText.setAttribute("class", "tooltiptext visible");
+  });
+
+  tooltipElement.addEventListener("mouseout", () => {
+    tooltipText.setAttribute("class", "tooltiptext");
+  });
+</script>
