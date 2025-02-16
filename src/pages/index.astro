@@ -82,7 +82,9 @@ console.log(allBlogPosts);
   posts.forEach((post) => {
     post.addEventListener("click", () => {
       const props = JSON.parse(post.dataset.props);
-      window.location.href = `/blog/${props.id}.html`;
+      const currentLocation = window.location.origin;
+      const postUrl = `${currentLocation}/blog/${props.id}.html`;
+      return window.location.href = postUrl;
     });
   });
 </script>

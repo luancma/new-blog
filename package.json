@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "clean_paths": "node ./scripts/replaceAstroPaths.cjs",
-    "build_and_replace": "npm-run-all --serial build clean_paths",
+    "build_and_replace": "npm-run-all --serial build",
     "preview": "astro preview",
     "astro": "astro"
   },
