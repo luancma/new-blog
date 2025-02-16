@@ -3,9 +3,19 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Fallback from "../assets/img/fallback.jpeg";
 const allBlogPosts = await getCollection("blog");
-import Tooltip from '../components/Tooltip.astro'
+import { DateTime } from "luxon";
 
-console.log(allBlogPosts);
+const orderByDate = (a, b) => {
+  const dateA = DateTime.fromFormat(a.data.createdAt, "dd/MM/yyyy").toJSDate();
+  const dateB = DateTime.fromFormat(b.data.createdAt, "dd/MM/yyyy").toJSDate();
+  console.log({
+    dateA,
+    dateB,
+  });
+  return dateA - dateB;
+};
+
+const orderedPosts = allBlogPosts.sort(orderByDate);
 ---
 
 <!doctype html>
@@ -16,44 +26,122 @@ console.log(allBlogPosts);
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/styles/global.css" />
-    <title>Blog blablalbla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="Espaço dedicado para o compartilhamento de textos críticos e pensamentos marxistas-leninistas, voltado para a realidade Portuguesa."
+    />
+    <title>Voz do Trabalhador</title>
   </head>
   <body>
-    <h1>My posts</h1>
+    <div class="header">
+      <h1>Voz do trabalhador</h1>
+      <div class="divider"></div>
+      <p>
+        Espaço dedicado para o compartilhamento de textos críticos e pensamentos
+        marxistas-leninistas, voltado para a realidade Portuguesa.
+      </p>
+    </div>
 
-    <div class="posts-grid">
-      {
-        allBlogPosts.map((post) => (
-          <div id="post-item" data-props={JSON.stringify(post)}>
-            <Image src={Fallback} height={200} width={300} alt={"post image"} />
-            <Tooltip title={post?.rendered?.metadata?.frontmatter.title}>
-              <h2 id="post-title">
-                {post?.rendered?.metadata?.frontmatter.title}
-              </h2>
-            </Tooltip>
-            <p>{post?.rendered?.metadata?.frontmatter.description}</p>
-          </div>
-        ))
-      }
+    <div class="posts-container">
+      <h3>Postagens:</h3>
+      <div class="posts-grid">
+        {
+          orderedPosts.map((post) => (
+            <div
+              class="post-item"
+              id="post-item"
+              data-props={JSON.stringify(post)}
+            >
+              <Image class={"post-image"} src={Fallback} alt={"post image"} />
+              <h3>{post?.rendered?.metadata?.frontmatter.title}</h3>
+              <p class="post-tag">
+                {post?.rendered?.metadata?.frontmatter.primaryTag}
+              </p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </body>
 </html>
 
-<style>
+<style type="text/css">
+  :root {
+    --primary-color: #3a3335;
+    --secondary-color: #fdf0d5;
+    --white-color: #ffffff;
+
+    --card-text-color: #161314;
+  }
+
   body {
     max-width: 800px;
     margin: 0 auto;
-    padding: 1rem;
+    background-color: var(--primary-color);
   }
-  h1 {
-    color: red;
+
+  .header {
+    text-align: center;
+    color: #fdf0d5;
+    background-color: var(--primary-color);
+    padding: 0 2rem;
+
+    h1 {
+      width: 70%;
+      color: var(--secondary-color);
+      font-size: 24px;
+      text-transform: uppercase;
+      padding: 1rem 0;
+      word-break: normal;
+      line-height: 1.5;
+      font-weight: 700;
+      font-family: "Domine", serif;
+      padding: 2rem 0 0 0;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background-color: var(--secondary-color);
+      margin: 0 auto;
+      margin: 2rem 0;
+    }
+
+    p {
+      color: var(--secondary-color);
+      font-size: 16px;
+      text-align: left;
+      margin: auto;
+      padding-bottom: 1rem;
+      font-weight: 200;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 42px;
+      }
+
+      p {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .posts-container {
+    margin-top: 2rem;
+    color: var(--primary-color);
   }
 
   .posts-grid {
     display: grid;
-    width: 300px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    justify-items: center;
+    margin: auto;
     gap: 1rem;
 
     h2 {
@@ -63,16 +151,54 @@ console.log(allBlogPosts);
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  }
 
-  #post-title {
-    display: inline-block;
-    border-bottom: 1px dotted black;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 280px;
+    .post-item {
+      position: relative;
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background-color: var(--secondary-color);
+      box-shadow:
+        0px 0px 0px 2px rgba(0, 0, 0, 0.1),
+        12px 10px 12px 0px rgba(0, 0, 0, 0.1);
+      width: 280px;
+      height: 360px;
+      margin: auto;
+      color: var(--card-text-color);
+
+      & .post-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      & h3 {
+        font-size: 16px;
+        margin: 0.5rem 0;
+        font-weight: 700;
+        font-family: "Domine", serif;
+      }
+
+      & .post-tag {
+        font-size: 14px;
+        font-weight: 200;
+        color: var(--primary-color);
+        padding: 0.5rem;
+        border-radius: 4px;
+        margin: 0.5rem 0;
+        font-weight: 700;
+        position: absolute;
+        bottom: -8px;
+        right: 0;
+      }
+    }
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
   }
 </style>
 
@@ -84,7 +210,7 @@ console.log(allBlogPosts);
       const props = JSON.parse(post.dataset.props);
       const currentLocation = window.location.origin;
       const postUrl = `${currentLocation}/blog/${props.id}.html`;
-      return window.location.href = postUrl;
+      return (window.location.href = postUrl);
     });
   });
 </script>
