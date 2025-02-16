@@ -8,10 +8,6 @@ import { DateTime } from "luxon";
 const orderByDate = (a, b) => {
   const dateA = DateTime.fromFormat(a.data.createdAt, "dd/MM/yyyy").toJSDate();
   const dateB = DateTime.fromFormat(b.data.createdAt, "dd/MM/yyyy").toJSDate();
-  console.log({
-    dateA,
-    dateB,
-  });
   return dateA - dateB;
 };
 
