@@ -1,4 +1,5 @@
 ---
+import "/public/styles/global.css";
 const {
   frontmatter: { title },
   metadata,
@@ -20,7 +21,6 @@ const tagsString = tags.join(", ");
     <meta name="primaryTag" content={metadata.frontmatter.primaryTag} />
     <meta name="pageTitle" content={metadata.frontmatter.title} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/styles/global.css" />
     <title>{metadata.frontmatter.title}</title>
   </head>
   <body class="container">
