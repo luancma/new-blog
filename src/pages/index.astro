@@ -8,10 +8,6 @@ import { DateTime } from "luxon";
 const orderByDate = (a, b) => {
   const dateA = DateTime.fromFormat(a.data.createdAt, "dd/MM/yyyy").toJSDate();
   const dateB = DateTime.fromFormat(b.data.createdAt, "dd/MM/yyyy").toJSDate();
-  console.log({
-    dateA,
-    dateB,
-  });
   return dateA - dateB;
 };
 
@@ -32,6 +28,13 @@ const orderedPosts = allBlogPosts.sort(orderByDate);
       href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap"
       rel="stylesheet"
     />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="UP - Lisboa, membro anonimo" />
+    <meta
+      name="keywords"
+      content="blog, marxism, leninism, Portugal, critical texts, marxismo, trabalho, trabalhadores, proletário, proletariados"
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta
       name="description"
       content="Espaço dedicado para o compartilhamento de textos críticos e pensamentos marxistas-leninistas, voltado para a realidade Portuguesa."
@@ -56,9 +59,13 @@ const orderedPosts = allBlogPosts.sort(orderByDate);
             <div
               class="post-item"
               id="post-item"
-              data-props={JSON.stringify(post)}
+              data-slug={JSON.stringify(post.id)}
             >
-              <Image class={"post-image"} src={Fallback} alt={"post image"} />
+              <Image
+                class={"post-image"}
+                src={Fallback}
+                alt="cover image for posts"
+              />
               <h3>{post?.rendered?.metadata?.frontmatter.title}</h3>
               <p class="post-tag">
                 {post?.rendered?.metadata?.frontmatter.primaryTag}
@@ -202,14 +209,14 @@ const orderedPosts = allBlogPosts.sort(orderByDate);
   }
 </style>
 
-<script type="module">
+<script lang="javascript">
   const posts = document.querySelectorAll("#post-item");
 
   posts.forEach((post) => {
     post.addEventListener("click", () => {
-      const props = JSON.parse(post.dataset.props);
+      const slug = JSON.parse(post.dataset.slug);
       const currentLocation = window.location.origin;
-      const postUrl = `${currentLocation}/blog/${props.id}.html`;
+      const postUrl = `${currentLocation}/blog/${slug}.html`;
       return (window.location.href = postUrl);
     });
   });
