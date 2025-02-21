@@ -1,0 +1,138 @@
+---
+import "./styles.css";
+---
+
+<!-- Quill Editor Container -->
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <link
+    href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+    rel="stylesheet"
+  />
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/quilljs-markdown@latest/dist/quilljs-markdown.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/quilljs-markdown@latest/dist/quilljs-markdown-common-style.css"
+  />
+</head>
+<div class="form">
+  <input type="text" id="title" placeholder="Título" />
+  <input type="text" id="author" placeholder="Autor" />
+  <input type="text" id="author-description" placeholder="Descrição do autor" />
+  <input type="text" id="description" placeholder="Description" />
+  <input type="text" id="tags" placeholder="Tags" />
+  <input type="text" id="links" placeholder="Links" />
+  <input type="text" id="main-tag" placeholder="Main tag" />
+
+  <div id="editor" style="height: 300px;"></div>
+</div>
+<button id="send-btn" class="send-btn">Enviar</button>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .form input {
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .send-btn {
+    margin-top: 20px;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+
+  #editor {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .send-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toolbarOptions = [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
+      ["link", "image", "formula"],
+      [{ header: 1 }, { header: 2 }, { header: 3 }],
+      [{ align: [] }],
+      [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      // [{ direction: "rtl" }], // text direction
+      // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      ["clean"], // remove formatting button
+    ];
+
+    const editor = new Quill("#editor", {
+      theme: "snow",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
+
+    // Listen for content changes (optional)
+    editor.on("text-change", () => {
+      console.log(editor.root.innerHTML);
+    });
+
+    new QuillMarkdown(editor);
+
+    const sendBtn = document.getElementById("send-btn");
+
+    sendBtn?.addEventListener("click", () => {
+      const editor = document.querySelector(".ql-editor");
+      const title = document.getElementById("title").value;
+      const author = document.getElementById("author").value;
+      const description = document.getElementById("description").value;
+      const tags = document.getElementById("tags").value; 
+      const links = document.getElementById("links").value;
+      const mainTag = document.getElementById("main-tag").value;
+      const authorDescription = document.getElementById("author-description").value;
+      const content = editor.innerHTML;
+      fetch("http://localhost:3000/create-md", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          author,
+          description,
+          tags,
+          links,
+          mainTag,
+          content,
+          authorDescription
+        }),
+      });
+    });
+  });
+</script>
