@@ -1,4 +1,5 @@
 @import url("/styles/reset.css");
+@import url("/styles/variables.css");
 
 @font-face {
   font-family: "Montserrat";
@@ -27,7 +28,6 @@ article {
     margin-top: 24px;
   }
 }
-
 
 .container {
   max-width: 1200px;
@@ -100,4 +100,46 @@ article {
   white-space: nowrap;
   font-size: 12px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* footer */
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding: 16px 0;
+  border-top: 1px solid #737380;
+  color: var(--secondary-color);
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    span {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: #737380;
+      color: #fff;
+      font-size: 14px;
+    }
+  }
+
+  .share {
+    display: flex;
+    gap: 16px;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: #737380;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
 }

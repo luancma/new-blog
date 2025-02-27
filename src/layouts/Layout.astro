@@ -1,24 +1,39 @@
 ---
+
 ---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="UP - Lisboa, membro anonimo" />
+    <meta
+      name="keywords"
+      content="blog, marxism, leninism, Portugal, critical texts, marxismo, trabalho, trabalhadores, proletário, proletariados"
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta
+      name="description"
+      content="Espaço dedicado para o compartilhamento de textos críticos e pensamentos marxistas-leninistas, voltado para a realidade Portuguesa."
+    />
+    <title>It blog</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+  <footer>
+    <p>© 2021 Astro Basics</p>
+  </footer>
+</html>

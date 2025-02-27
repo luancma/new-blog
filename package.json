@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "clean_paths": "node ./scripts/replaceAstroPaths.cjs",
-    "build_and_replace": "npm-run-all --serial build",
+    "fetch-md": "node ./scripts/fetchMDsFiles.js",
+    "build:fetch-md": "npm-run-all fetch-md build",
     "preview": "astro preview",
     "astro": "astro"
   },
