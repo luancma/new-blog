@@ -1,11 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import Fallback from "../assets/img/fallback.jpeg";
 import "/public/styles/blogIndex.css";
 const allBlogPosts = await getCollection("blog");
 import { DateTime } from "luxon";
 import Layout from "../layouts/Layout.astro";
+import dotenv from "dotenv";
+dotenv.config();
 
 const orderByDate = (a, b) => {
   const dateA = DateTime.fromFormat(a.data.createdAt, "dd/MM/yyyy").toJSDate();
@@ -14,6 +15,7 @@ const orderByDate = (a, b) => {
 };
 
 const orderedPosts = allBlogPosts.sort(orderByDate);
+const { BACKEND_URL } = process.env;
 ---
 
 <Layout>
@@ -34,15 +36,15 @@ const orderedPosts = allBlogPosts.sort(orderByDate);
           >
             <Image
               class={"post-image"}
-              src={`http://localhost:3000/image/${post.data.cover}`}
+              src={`${BACKEND_URL}/image/${post.data.cover}`}
               inferSize
               height={300}
               width={300}
               alt="cover image for posts"
             />
-            <h3>{post?.rendered?.metadata?.frontmatter.title}</h3>
+            <h3>{(post?.rendered?.metadata?.frontmatter as { title: string }).title}</h3>
             <p class="post-tag">
-              {post?.rendered?.metadata?.frontmatter.primaryTag}
+              {(post?.rendered?.metadata?.frontmatter as { primaryTag: string }).primaryTag}
             </p>
           </div>
         ))
