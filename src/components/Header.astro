@@ -1,0 +1,11 @@
+---
+import dotenv from "dotenv";
+dotenv.config();
+const { BLOG_TITLE, BLOG_DESCRIPTION } = process.env;
+---
+
+<div class="header">
+  <h1>{BLOG_TITLE}</h1>
+  <div class="divider"></div>
+  <p>{BLOG_DESCRIPTION}</p>
+</div>

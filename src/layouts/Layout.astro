@@ -1,5 +1,7 @@
 ---
-
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+const { BACKEND_URL, BLOG_TITLE, BLOG_DESCRIPTION } = process.env;
 ---
 
 <!doctype html>
@@ -27,13 +29,12 @@
       name="description"
       content="Espaço dedicado para o compartilhamento de textos críticos e pensamentos marxistas-leninistas, voltado para a realidade Portuguesa."
     />
-    <title>It blog</title>
+    <title>{BLOG_TITLE}</title>
   </head>
   <body>
+    <Header />
     <slot />
   </body>
 
-  <footer>
-    <p>© 2021 Astro Basics</p>
-  </footer>
+  <Footer />
 </html>

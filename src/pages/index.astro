@@ -15,16 +15,10 @@ const orderByDate = (a, b) => {
 };
 
 const orderedPosts = allBlogPosts.sort(orderByDate);
-const { BACKEND_URL } = process.env;
+const { BACKEND_URL, BLOG_TITLE, BLOG_DESCRIPTION } = process.env;
 ---
 
 <Layout>
-  <div class="header">
-    <h1>Blog</h1>
-    <div class="divider"></div>
-    <p>Space</p>
-  </div>
-
   <div class="posts-container">
     <div class="posts-grid">
       {
@@ -42,9 +36,20 @@ const { BACKEND_URL } = process.env;
               width={300}
               alt="cover image for posts"
             />
-            <h3>{(post?.rendered?.metadata?.frontmatter as { title: string }).title}</h3>
+            <h3>
+              {
+                (post?.rendered?.metadata?.frontmatter as { title: string })
+                  .title
+              }
+            </h3>
             <p class="post-tag">
-              {(post?.rendered?.metadata?.frontmatter as { primaryTag: string }).primaryTag}
+              {
+                (
+                  post?.rendered?.metadata?.frontmatter as {
+                    primaryTag: string;
+                  }
+                ).primaryTag
+              }
             </p>
           </div>
         ))
