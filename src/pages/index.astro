@@ -1,10 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import Fallback from "../assets/img/fallback.jpeg";
-import "/public/styles/blog-index.css";
+import "/public/styles/blogIndex.css";
 const allBlogPosts = await getCollection("blog");
 import { DateTime } from "luxon";
+import Layout from "../layouts/Layout.astro";
+import dotenv from "dotenv";
+dotenv.config();
 
 const orderByDate = (a, b) => {
   const dateA = DateTime.fromFormat(a.data.createdAt, "dd/MM/yyyy").toJSDate();
@@ -12,72 +14,51 @@ const orderByDate = (a, b) => {
   return dateA - dateB;
 };
 
-const orderedPosts = allBlogPosts.sort(orderByDate);
+const orderedPosts = allBlogPosts?.sort(orderByDate) || [];
+const { BACKEND_URL } = process.env;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/styles/global.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="UP - Lisboa, membro anonimo" />
-    <meta
-      name="keywords"
-      content="blog, marxism, leninism, Portugal, critical texts, marxismo, trabalho, trabalhadores, proletário, proletariados"
-    />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta
-      name="description"
-      content="Espaço dedicado para o compartilhamento de textos críticos e pensamentos marxistas-leninistas, voltado para a realidade Portuguesa."
-    />
-    <title>Voz do Trabalhador</title>
-  </head>
-  <body>
-    <div class="header">
-      <h1>Voz do trabalhador</h1>
-      <div class="divider"></div>
-      <p>
-        Espaço dedicado para o compartilhamento de textos críticos e pensamentos
-        marxistas-leninistas, voltado para a realidade Portuguesa.
-      </p>
-    </div>
-
-    <div class="posts-container">
-      <h3>Postagens:</h3>
-      <div class="posts-grid">
-        {
-          orderedPosts.map((post) => (
-            <div
-              class="post-item"
-              id="post-item"
-              data-slug={JSON.stringify(post.id)}
-            >
+<Layout>
+  <div class="posts-container">
+    <div class="posts-grid">
+      {
+        orderedPosts?.map((post) => (
+          <div
+            class="post-item"
+            id="post-item"
+            data-slug={JSON.stringify(post.id)}
+          >
+            {post.data.cover && (
               <Image
                 class={"post-image"}
-                src={Fallback}
+                src={`${BACKEND_URL}/image/${post.data.cover}`}
+                inferSize
+                height={300}
+                width={300}
                 alt="cover image for posts"
               />
-              <h3>{post?.rendered?.metadata?.frontmatter.title}</h3>
-              <p class="post-tag">
-                {post?.rendered?.metadata?.frontmatter.primaryTag}
-              </p>
-            </div>
-          ))
-        }
-      </div>
+            )}
+            <h3>
+              {
+                (post?.rendered?.metadata?.frontmatter as { title: string })
+                  .title
+              }
+            </h3>
+            <p class="post-tag">
+              {
+                (
+                  post?.rendered?.metadata?.frontmatter as {
+                    primaryTag: string;
+                  }
+                ).primaryTag
+              }
+            </p>
+          </div>
+        ))
+      }
     </div>
-  </body>
-</html>
+  </div>
+</Layout>
 
 <script lang="javascript">
   const posts = document.querySelectorAll("#post-item");
