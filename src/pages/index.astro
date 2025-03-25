@@ -14,28 +14,30 @@ const orderByDate = (a, b) => {
   return dateA - dateB;
 };
 
-const orderedPosts = allBlogPosts.sort(orderByDate);
-const { BACKEND_URL, BLOG_TITLE, BLOG_DESCRIPTION } = process.env;
+const orderedPosts = allBlogPosts?.sort(orderByDate) || [];
+const { BACKEND_URL } = process.env;
 ---
 
 <Layout>
   <div class="posts-container">
     <div class="posts-grid">
       {
-        orderedPosts.map((post) => (
+        orderedPosts?.map((post) => (
           <div
             class="post-item"
             id="post-item"
             data-slug={JSON.stringify(post.id)}
           >
-            <Image
-              class={"post-image"}
-              src={`${BACKEND_URL}/image/${post.data.cover}`}
-              inferSize
-              height={300}
-              width={300}
-              alt="cover image for posts"
-            />
+            {post.data.cover && (
+              <Image
+                class={"post-image"}
+                src={`${BACKEND_URL}/image/${post.data.cover}`}
+                inferSize
+                height={300}
+                width={300}
+                alt="cover image for posts"
+              />
+            )}
             <h3>
               {
                 (post?.rendered?.metadata?.frontmatter as { title: string })

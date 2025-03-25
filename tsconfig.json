@@ -12,5 +12,7 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react"
-  }
+  },
+  "moduleResolution": "node16", 
+  "module": "node16"
 }
