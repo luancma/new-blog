@@ -1,11 +1,30 @@
 ---
 import dotenv from "dotenv";
 dotenv.config();
-const { BLOG_TITLE, BLOG_DESCRIPTION } = process.env;
+const { BLOG_TITLE, BLOG_DESCRIPTION, BLOG_SUB_DESCRIPTION } = process.env;
 ---
 
 <div class="header">
   <h1>{BLOG_TITLE}</h1>
   <div class="divider"></div>
-  <p>{BLOG_DESCRIPTION}</p>
+  <p class="description">{BLOG_DESCRIPTION}</p>
+  <p class="sub-description">{BLOG_SUB_DESCRIPTION}</p>
 </div>
+
+<style>
+  .description {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  }
+
+  .sub-description {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    font-style: italic;
+    padding: 1rem 0;
+    border-left: 1px solid var(--secondary-color);
+    padding-left: 16px;
+  }
+</style>
