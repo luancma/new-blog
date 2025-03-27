@@ -1,5 +1,7 @@
 ---
 import "/public/styles/global.css";
+import "./blogPost.style.css";
+
 const {
   frontmatter: { title },
   metadata,
@@ -8,12 +10,7 @@ const {
 const tags = metadata.frontmatter.tags || [];
 const tagsString = tags.join(", ");
 
-
-const formattedDate = new Date(metadata.frontmatter.createdAt).toLocaleDateString("en-GB", {
-  year: "numeric",
-  month: "2-digit",
-  day: "numeric",
-});
+const formattedDate = metadata.frontmatter.createdAt
 ---
 
 <!doctype html>
@@ -65,10 +62,10 @@ const formattedDate = new Date(metadata.frontmatter.createdAt).toLocaleDateStrin
 <script type="module">
   const backButton = document.getElementById("back-button");
   backButton.addEventListener("click", () => {
-    window.history.back();
+    window.location.href = "/";
   });
 
   backButton.removeEventListener("click", () => {
-    window.history.back();
+    window.location.href = "/";
   });
 </script>
