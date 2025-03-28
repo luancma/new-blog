@@ -1,14 +1,19 @@
 ---
 import dotenv from "dotenv";
+import { geHomePageMessages, MessageKeys } from "../messages";
+const { BLOG_TITLE, BLOG_DESCRIPTION, BLOG_SUB_DESCRIPTION } = MessageKeys;
 dotenv.config();
-const { BLOG_TITLE, BLOG_DESCRIPTION, BLOG_SUB_DESCRIPTION } = process.env;
 ---
 
 <div class="header">
-  <h1>{BLOG_TITLE}</h1>
+  <h1>{geHomePageMessages(BLOG_TITLE)}</h1>
   <div class="divider"></div>
-  <p class="description">{BLOG_DESCRIPTION}</p>
-  <p class="sub-description">{BLOG_SUB_DESCRIPTION}</p>
+  <p class="description">
+    {geHomePageMessages(BLOG_DESCRIPTION)}
+  </p>
+  <p class="sub-description">
+    {geHomePageMessages(BLOG_SUB_DESCRIPTION)}
+  </p>
 </div>
 
 <style>
